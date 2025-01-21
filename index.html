@@ -1,13 +1,1396 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My GitHub Page</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <h1>Welcome to My GitHub Page</h1>
-    <p>This is a simple static website hosted on GitHub Pages.</p>
-</body>
+<html>
+  <head>
+    <base target="_top">
+
+    <style>
+      //---------------------------------start of style---------------------------------------------------------------------
+      body {
+        font-family:Helvetica;
+        display: grid;
+        grid-template-columns: 1fr 300px;
+        grid-template-rows: auto 1fr auto;
+        grid-template-areas:
+        "navbar navbar"
+        "main sidebar"
+        "footer sidebar";
+      }
+      nav{ 
+        grid-area: navbar;
+        position: sticky;
+        top: 0;
+        border-style: solid;
+        border-width: 1px;
+        border-color: grey;
+        border-radius:8px;
+        background-color: yellow;
+        padding: 10px;
+      }
+        #navtab{
+          display:grid;
+          grid-template-columns: auto 1fr auto;
+          grid-template-areas:
+          "navl navm navr";
+        }
+        #navl{grid-area:navl;}
+        #navm{
+          grid-area:navm;
+          padding-left: 1em;
+          //text-align: center;
+        }
+        #navr{grid-area:navr;}
+      aside{
+        grid-area: sidebar;
+        height: calc(100vh - 70px);
+        top: 55px;
+        position: sticky;
+        align-self: start;
+        border-style: solid;
+        border-width: 1px;
+        border-color: grey;
+        border-radius:8px;
+        background: rgba(255, 255, 0, 0.9);
+        padding: 10px;
+      }
+      main{
+        grid-area: main;
+        border-style: solid;
+        border-width: 1px;
+        border-color: grey;
+        border-radius:8px;
+        //background-color: blue;
+        padding: 1em;
+      }
+      footer{
+        grid-area: footer;
+        border-style: solid;
+        border-width: 1px;
+        border-color: grey;
+        border-radius:8px;
+        //background-color: red;
+        padding: 1em;
+      }
+      #btn-sidebar{
+        display:none;
+      }
+      button{
+        text-decoration:none;
+      }
+      button:hover{
+        background-color:lightyellow;
+      }
+
+      @media (max-width: 800px){
+        body{
+          grid-template-columns: 1fr;
+          grid-template-areas:
+          "navbar"
+          "main"
+          "footer";
+        }
+        aside{
+          top: 55px;
+          right:0px;
+          position: fixed;
+          width: 200px;
+          display: none;
+        }
+        #btn-sidebar{
+          display:inline-block;
+        }
+      }
+      .show{
+        display: block;
+      }
+      .hide{
+        display:none;
+      }
+
+      /* The Modal (background) */
+      .modal {
+        //display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        //z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        padding-top: 60px;
+      }
+
+      /* Modal Content/Box */
+      .modal-content {
+        text-align:left;
+        background-color: #fefefe;
+        margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+        border: 1px solid #888;
+        border-radius:8px;
+        width: fit-content; /* Could be more or less, depending on screen size */
+        padding:20px;
+      }
+      .form-row {
+        margin-bottom:5px;
+      }
+      .form-border {
+        border: 2px solid lightgrey;
+        border-radius: 5px;
+        padding: 5px;
+      }
+      table {
+        width:100%;
+        border-collapse: collapse; /* Collapse borders for cleaner look */
+      }
+      td, th {
+        border: 1px solid #ddd; /* Set border for each cell */
+        padding: 5px; /* Add some padding for better readability */
+      }
+      th {
+        text-align: center; /* Center text within th cells */
+      }
+      .w100 {
+        width:100px;
+        font-weight: bold;
+      }
+      .proc-table {
+
+      }
+      .header-cell {
+        font-weight: bold;
+      }
+      #tb-proses tr:nth-child(even){
+        background-color: #f2f2f2;
+      }
+      #tb-proses tr:hover {
+        background-color: #ddd;
+      }
+      #tb-proses th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+      }
+
+      #btn-simpan {
+        padding: 5px;
+      }
+
+      .searchBox {
+        background-color:white;
+        display:flex;
+        flex-wrap:wrap;
+        justify-content:center;
+        flex-grow:1;
+        padding:5px;
+        border-style: solid;
+        border-width: 1px;
+        border-color: grey;
+        border-radius:8px;
+      }
+      .center {
+        display: flex;
+        justify-content:center;
+        margin-top:5px;
+      }
+      .flex{
+        width:auto;
+        display:flex;
+      }
+      .flex-grow{
+        width:auto;
+        flex-grow:1
+        margin-top:0.5rem;
+        font-weight:bold;
+      }
+      .superscript{
+        font-size:60%;
+        margin-right:5px;
+        color:dodgerblue;
+        height:16px;
+      }
+      .fontbirumuda{color:dodgerblue;}
+      .borderbirumuda {border: 2px solid dodgerblue;}
+      .redButton{
+        background-color: #f44336;
+        color:white;
+      }
+      .jaraktabel{
+        margin-bottom:1em;
+      }
+
+      #tiketSpk {
+        width:100%;
+      }
+
+      @media print {
+            body * {
+                visibility: hidden; /* Hide everything */
+            }
+            #tiketSpk, #tiketSpk * {
+                visibility: visible; /* Show the print area */
+                overflow: visible;
+            }
+            #tiketSpk {
+                font-size:90%;
+                position: absolute; /* Position it for printing */
+                left: 0;
+                right:10%;
+                top: 0;
+                //width: 100%; /* Full width for the print area */
+                margin: 0; /* Remove margins */
+                background-color: white; /* Background color for print */
+
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-around;
+            }
+            /* Force a page break after every 6 tables */
+            .page-break {
+                page-break-after: always; /* Force a page break after this element */
+            }
+            .kartuspk {
+                width: 45%; /* Each table takes up about half the width */
+                margin-bottom: 1vh; /* Space between tables */
+                margin-right: 1vw; /* Space between tables */
+                //border-collapse: collapse;
+                box-sizing:border-box;
+            }
+        }
+      //---------------------------------end of style---------------------------------------------------------------------
+    </style>
+
+  </head>
+  <body style="background-color: grey;">
+    <nav>
+      <div id="navtab">
+        <div id="navl">
+          <button>
+            <?var url = getScriptUrl();?><a href='<?=url?>?page=0-home' target="_top" style="font-weight:bold;">Home</a> <!--button pindah ke page lain -->
+          </button>
+        </div>
+        <div id="navm">PO</div>
+        <div id="navr">
+          <button id="btn-sidebar" style="right:0px;" onclick="toggleSidebar()">Arsip</button>
+        </div>
+      </div>
+    </nav>
+    <main>
+      <div class="modal-content" style="display:block">
+        <div style="text-align:right;">
+          <button style="background-color:red;">
+            <?var url = getScriptUrl();?><a href='<?=url?>?page=pre-order' target="_top" style="text-decoration:none;background-color:red;color:white;font-weight:bold;"> RESET</a> <!--button pindah ke page lain -->
+          </button>
+        </div> 
+        <label style="font-size:150%;font-weight:bold;">Pre Order Baru</label> 
+        <table>
+          <tr>
+            <td>
+              <div class="form-row" >
+                <label>Nomor PO :</label>
+                <input type="text" id="in_nomorpo" placeholder="Isi Nomor PO" oninput="this.value = this.value.toUpperCase();" required>
+              </div>
+
+              <div class="form-row" >
+                <label>Nomor AJ :</label>
+                <label>L </label><input type="number" id="in_nomoraj" style="width:50px;" disabled>
+              </div>
+
+              <div class="form-row" >
+                <label>Jenis PO :</label>
+                <input type="text" id="in_jenispo" placeholder="Isi Jenis PO" oninput="this.value = this.value.toUpperCase();" required>
+              </div>
+
+              <div class="form-row" >
+                <label>Tanggal PO :</label>
+                <input type="date" id="in_tanggalpo" required>
+              </div>
+
+              <div class="form-row" >
+                <label>Kode Item :</label>
+                <select id="in_kodeitem">
+                  <option disabled selected value="">Pilih Kode Item</option>
+                </select>
+              </div>
+
+            </td>
+            <td>
+              <div class="form-row">
+                <label>Tipe:</label>
+                <select id="in_tipe">
+                  <option>Sandal</option>
+                  <option>Sepatu</option>
+                </select><br>
+              </div>
+              <div class="form-row">
+                <label>Ukuran:</label>
+                <select id="szstart">
+                  <script>
+                    for (let i = 21; i <= 41; i++) {
+                      document.write(`<option value="${i}">${i}</option>`);
+                    }
+                  </script>
+                </select> 
+                <label>-</label>
+                <select id="szend">
+                  <script>
+                    for (let i = 21; i <= 41; i++) {
+                      document.write(`<option value="${i}">${i}</option>`);
+                    }
+                  </script>
+                </select> 
+              </div>          
+            </td>
+          </tr>
+          <tr>
+            <td colspan="2">
+              <table id="table-size">
+              </table>
+            </td>            
+          </tr>          
+          <tr>
+            <td>
+              <label id="warn-log" style="text-align:left;color:red;"></label>
+            </td>
+            <td>
+              <div class="form-row" style="text-align:right;">
+                <button id="btn-proses" >PROSES</button>
+              </div>
+            </td>
+          </tr>
+        </table>
+
+        <h4>Cek Kembali Data</h4>
+        <div id="tempTable" style="padding:5px;">
+          <table>
+            <tr>
+              <td class="w100">NomorPO</td>
+              <td><label id="tp_nomorpo">-</label></td>
+              <td class="w100">JenisPO</td>
+              <td><label id="tp_jenispo">-</label></td>
+            </tr>
+            <tr>
+              <td class="w100">Nomor AJ</td>
+              <td><label id="tp_nomoraj">-</label></td>
+              <td class="w100">Tanggal</td>
+              <td><label id="tp_tanggalpo">-</label></td>
+            </tr>
+            <tr>
+              <td class="w100">KodeItem</td>
+              <td><label id="tp_kodeitem">-</label></td>
+              <td class="w100">KI Supp</td>
+              <td><label id="tp_kisupp">-</label></td>
+            </tr>
+            <tr>
+              <td class="w100">Merek</td>
+              <td><label id="tp_merek">-</label></td>
+              <td class="w100">Warna</td>
+              <td><label id="tp_warna">-</label></td>
+            </tr>
+            <tr>
+              <!-- <td class="w100">Jumlah SPK</td>
+              <td><label id="tp_jumlahspk">-</label></td> -->
+              <td class="w100">Total</td>
+              <td><label id="tp_jumlahpo">0</label></td>
+              <td class="w100">Tipe</td>
+              <td><label id="tp_tipe">-</label></td>
+            </tr>
+          </table>
+        </div>
+
+        <div style="padding:5px;">
+          <table id="tb-proses">
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+
+        <button id="btn-simpan" class="form-row hide" style="width:100%;">SIMPAN</button>
+      </div>
+      <div id="pg-tersimpan" class="modal hide">
+        <div class="modal-content" style="z-index: 1;">
+          <h1>Data Tersimpan</h1>
+          <button>
+            <?var url = getScriptUrl();?><a href='<?=url?>?page=pre-order' target="_top"> Refresh</a> <!--button pindah ke page lain -->
+          </button>
+          <button>
+            <?var url = getScriptUrl();?><a href='<?=url?>?page=0-home' target="_top"> Home</a> <!--button pindah ke page lain -->
+          </button>
+        </div>
+      </div>
+
+      <div id="tabSpk" class="modal hide" style="z-index:3">
+        <div class="modal-content">
+          <div class="jaraktabel center" style="width:auto;justify-content:space-between;">
+            <button onclick="tutupTiketSpk()" class="redButton">Tutup</button>
+            <button onclick="printTiketSpk()">Print</button>
+          </div>
+          <div id="tiketSpk"></div>
+        </div>
+      </div>
+    </main>
+    <aside id="sidebar">
+      <h3>Arsip</h3>
+      <div class="searchBox">
+        <div>
+          <label>Nomor AJ: L</label>
+          <select id="se_nomoraj">
+            <option disabled selected value="">Pilih No AJ</option>
+          </select><br>
+          <div class="center">
+            <button id="btn-cari">Cari</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <footer>
+      Created by BIT solution
+    </footer>
+    <script>
+      //---------------------------------start of script---------------------------------------------------------------------
+      
+      window.onload = () => {
+          google.script.run.withSuccessHandler(loadKodeItemObject).getPOKodeItemList();
+          google.script.run.withSuccessHandler(noAjTerakir).getNoAj();
+          google.script.run.withSuccessHandler(loadNoAjObject).getNoAjList();
+
+          //loading tanggal hari ini
+          const today = new Date();
+          // Format the date as YYYY-MM-DD (ISO 8601)
+          const formattedDate = today.toISOString().split("T")[0];    
+          document.getElementById("in_tanggalpo").value = formattedDate;
+          document.getElementById("tp_tanggalpo").innerHTML = formattedDate; // show di table
+          const tipeProduk = document.getElementById("in_tipe").value;
+          document.getElementById("tp_tipe").innerHTML = tipeProduk; // show di table
+
+          createTableContent();
+      };
+
+      function toggleSidebar(){
+        const sidebar = document.getElementById("sidebar");
+        sidebar.classList.toggle("show");
+      }
+
+      const loadKodeItemObject = function(kodeItemObject) {
+          const kodeItemSel = document.getElementById("in_kodeitem");
+          for (let i = 0; i < kodeItemObject.length; i++) {
+              const option = document.createElement('option');
+              option.text = kodeItemObject[i];
+              option.value = kodeItemObject[i];
+              kodeItemSel.appendChild(option);
+          }
+      };
+
+      const loadNoAjObject = function(kodeItemObject) {
+          const kodeItemSel = document.getElementById("se_nomoraj");
+          for (let i = 0; i < kodeItemObject.length; i++) {
+              const option = document.createElement('option');
+              option.text = kodeItemObject[i];
+              option.value = kodeItemObject[i];
+              kodeItemSel.appendChild(option);
+          }
+      };
+
+      let noAjTerakir = function(noAjSheet){
+        let inNoAj = document.getElementById("in_nomoraj");
+        inNoAj.value = noAjSheet + 1;
+        document.getElementById("tp_nomoraj").textContent = inNoAj.value;
+      }
+
+      function createTableContent() {
+        const table = document.getElementById("table-size"); 
+
+        const headerRow = document.createElement('tr');
+        headerRow.id = "ts-th";
+
+        for (let i = 21; i <= 41; i++) {
+          const th = document.createElement('th');
+          th.id = `thsz${i}`;
+          th.textContent = i;
+          th.classList.add("hide");
+          headerRow.appendChild(th);
+        }
+
+        const totalTh = document.createElement('th');
+        totalTh.id = 'thsztotal';
+        totalTh.textContent = "Total";
+        totalTh.classList.add("hide");
+        headerRow.appendChild(totalTh); 
+
+        table.appendChild(headerRow);
+
+        const dataRow = document.createElement('tr');
+        dataRow.id = 'row';
+
+        for (let i = 21; i <= 41; i++) {
+          const td = document.createElement('td');
+          td.id = `tdsz${i}`;
+          td.classList.toggle("hide");
+
+          const input = document.createElement('input');
+          input.id = `in-sz-${i}`;
+          input.type = "number";
+          input.min = "0";
+          input.max = "99";
+          input.style.width = "50px";
+          input.addEventListener("input", calculateTotal); 
+
+          td.appendChild(input);
+          dataRow.appendChild(td);
+        }
+
+        const sumCell = document.createElement('td');
+        sumCell.id = "sumCell";
+        dataRow.appendChild(sumCell);
+
+        table.appendChild(dataRow);
+      }
+
+      function calculateTotal() {
+        let sum = 0;
+        for (let i = 21; i <= 41; i++) {
+          const input = document.getElementById(`in-sz-${i}`);
+          if (input) { 
+            sum += Number(input.value) || 0; 
+          }
+        }
+
+        const sumCell = document.getElementById("sumCell");
+        sumCell.textContent = sum;
+        document.getElementById("tp_jumlahpo").textContent = sum; 
+      }
+      
+      //noPO at tempTable
+      document.getElementById("in_nomorpo").addEventListener("change", function() {
+        const nomorPo = document.getElementById("in_nomorpo").value;
+        document.getElementById("tp_nomorpo").innerHTML = nomorPo; // show di table
+      });
+
+      //noAJ at tempTable
+      document.getElementById("in_nomoraj").addEventListener("change", function() {
+        const nomorAj = document.getElementById("in_nomoraj").value;
+        document.getElementById("tp_nomoraj").innerHTML = nomorAj; // show di table
+      });
+
+      //jenisPO at tempTable
+      document.getElementById("in_jenispo").addEventListener("change", function() {
+        const jenisPo = document.getElementById("in_jenispo").value;
+        document.getElementById("tp_jenispo").innerHTML = jenisPo;
+      });
+
+      //tanggalPO at tempTable
+      document.getElementById("in_tanggalpo").addEventListener("change", function() {
+        const tanggalPo = document.getElementById("in_tanggalpo").value;
+        document.getElementById("tp_tanggalpo").innerHTML = tanggalPo; // show di table
+      });
+
+      //tipe at tempTable
+      document.getElementById("in_tipe").addEventListener("change", function() {
+        const tipeProduk = document.getElementById("in_tipe").value;
+        document.getElementById("tp_tipe").innerHTML = tipeProduk; // show di table
+      });
+
+      //search KI SUPP, Merek, Warna
+      document.getElementById("in_kodeitem").addEventListener("change",function matchData(){
+        const kiPo = document.getElementById("in_kodeitem").value;
+        document.getElementById("tp_kodeitem").innerHTML = kiPo;
+
+        matchKodeItemSupplier();
+        matchMerek();
+        matchWarna();
+      });
+
+      function matchKodeItemSupplier() {
+        var kodeItem = document.getElementById("in_kodeitem").value;
+        google.script.run.withSuccessHandler(updateKodeItemSupplier).searchKodeItemSupplier(kodeItem);
+      };
+      function updateKodeItemSupplier(kodeItemSupplier){
+        document.getElementById("tp_kisupp").innerHTML = kodeItemSupplier;
+      };
+
+      function matchMerek() {
+        var kodeItem = document.getElementById("in_kodeitem").value;
+        google.script.run.withSuccessHandler(updateMerek).searchMerek(kodeItem);
+      };
+      function updateMerek(merek){
+        document.getElementById("tp_merek").innerHTML = merek;
+      };
+
+      function matchWarna() {
+        var kodeItem = document.getElementById("in_kodeitem").value;
+        google.script.run.withSuccessHandler(updateWarna).searchWarna(kodeItem);
+      };
+      function updateWarna(warna){
+        document.getElementById("tp_warna").innerHTML = warna;
+      };
+
+      document.getElementById("szend").addEventListener("change", refreshTableSize);
+      document.getElementById("szstart").addEventListener("change", refreshTableSize);
+
+      function refreshTableSize(event) {
+        let sizeStart = parseInt(document.getElementById("szstart").value); 
+        let sizeEnd = parseInt(document.getElementById("szend").value); 
+        document.getElementById("warn-log").innerHTML = ``;
+
+        if (sizeEnd > sizeStart) {
+          // Show columns between sizeStart and sizeEnd
+          for (let i = 21; i <= 41; i++) {
+            if (i >= sizeStart && i <= sizeEnd) {
+              document.getElementById(`thsz${i}`).classList.remove("hide");
+              document.getElementById(`tdsz${i}`).classList.remove("hide");
+            } else {
+              document.getElementById(`thsz${i}`).classList.add("hide");
+              document.getElementById(`tdsz${i}`).classList.add("hide");
+            }
+          }
+          document.getElementById(`thsztotal`).classList.remove("hide");
+        } else {
+          document.getElementById("warn-log").innerHTML = `Ukuran akhir harus lebih besar dari ukuran awal.`;
+          event.preventDefault(); 
+
+          // Hide all columns
+          for (let i = 21; i <= 41; i++) {
+            document.getElementById(`thsz${i}`).classList.add("hide");
+            document.getElementById(`tdsz${i}`).classList.add("hide");
+          }
+          document.getElementById(`thsztotal`).classList.add("hide");
+        }
+      }
+
+      //proses data menjadi table
+      const btnProses = document.getElementById("btn-proses");
+      btnProses.addEventListener("click",function (){
+        var poData = {};
+        let szstart = parseInt(document.getElementById("szstart").value);
+        let szend = parseInt(document.getElementById("szend").value);
+        document.getElementById("warn-log").innerHTML = ``;
+        poData = {
+        nomorpo : document.getElementById("tp_nomorpo").textContent,
+        jenispo : document.getElementById("tp_jenispo").textContent,
+        nomoraj : document.getElementById("tp_nomoraj").textContent,
+        tanggalpo : document.getElementById("tp_tanggalpo").textContent,
+        kodeitempo : document.getElementById("tp_kodeitem").textContent,
+        kisupppo : document.getElementById("tp_kisupp").textContent,
+        merekpo : document.getElementById("tp_merek").textContent,
+        warnapo : document.getElementById("tp_warna").textContent,
+        jumlahpo : parseInt(document.getElementById("tp_jumlahpo").textContent),
+        tipepo : document.getElementById("tp_tipe").textContent
+        };
+        for (let i = 21; i <= 41; i++){
+          let sizeInputId = "in-sz-" + i; 
+          let sizeValue = Number(document.getElementById(sizeInputId).value); 
+          if (isNaN(sizeValue)) { 
+            sizeValue = 0; 
+          }
+          //console.log(sizeValue); 
+          poData['size' + i] = sizeValue; 
+        };
+        if (checkValidity(poData)) { 
+          // If checkValidity returns true (all fields are valid)
+          document.getElementById("tb-proses").style.display = "block";
+          //console.log(poData);
+          prosesSpkList(poData);
+          
+          btnProses.classList.add('hide');
+          document.getElementById('in_nomorpo').disabled=true;
+          document.getElementById('in_jenispo').disabled=true;
+          document.getElementById('in_tanggalpo').disabled=true;
+          document.getElementById('in_kodeitem').disabled=true;
+          document.getElementById('in_tipe').disabled=true;
+          document.getElementById('szstart').disabled=true;
+          document.getElementById('szend').disabled=true;
+          for (let y = 21; y <= 41; y++) {
+            document.getElementById(`in-sz-${y}`).disabled = true;
+          }
+        } 
+      });
+
+      //fungsi cek isi dari setiap value
+      function checkValidity(poData) {
+        for (const key in poData) {
+          if (poData[key] === "-") {
+            document.getElementById("warn-log").innerHTML = `Tolong isi ${key}.`;
+            return false; // Return false if any field is "-"
+          }
+        };
+        var maxProduksi = 1000;
+        if (poData.jumlahpo>maxProduksi) {
+          document.getElementById("warn-log").innerHTML = `Jumlah melebihi ` + maxProduksi + ' pcs';
+          return false; // Return false if any field is "-"          
+        }
+        return true; // Return true if all fields are valid
+      };
+//--------------------------------------------------- proses spk
+      function prosesSpkList(poData) {
+        const tableAll = document.getElementById("tb-proses");
+        const tbodyres = tableAll.querySelector('tbody');
+        tableAll.removeChild(tbodyres);
+        tableAll.appendChild(tbodyres);        
+        const tableBody = tableAll.getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = '';
+
+        let tipeitem=0;
+
+        if(poData.tipepo=="Sandal"){tipeitem=50};
+        if(poData.tipepo=="Sepatu"){tipeitem=30};
+
+        const szSmall = document.getElementById("szstart").value;
+        const szBig = document.getElementById("szend").value;
+
+        // Create header row
+        const headerRow = document.createElement('tr');
+        const sizeHeader = document.createElement('th');
+        sizeHeader.textContent = "Size ";
+        const plusBtn = document.createElement('button');
+        plusBtn.id = 'tbsz-btn-plus';
+        plusBtn.textContent = '+';
+        plusBtn.addEventListener('click', () => {
+          newTbszRow(poData); 
+        });
+        sizeHeader.appendChild(plusBtn);
+        const minusBtn = document.createElement('button');
+        minusBtn.id = 'tbsz-btn-minus';
+        minusBtn.textContent = '-';
+        minusBtn.addEventListener('click', () => {
+          deleteTbszRow(poData); 
+        });
+        sizeHeader.appendChild(minusBtn);
+        headerRow.appendChild(sizeHeader);
+
+
+        for (let i = szSmall; i <= szBig; i++) {
+          const sizeHeader = document.createElement('th');
+          sizeHeader.textContent = i;
+          headerRow.appendChild(sizeHeader);
+        }
+        const totalSizeHeader = document.createElement('th');
+        totalSizeHeader.textContent = "Total";
+        headerRow.appendChild(totalSizeHeader);
+        tableBody.appendChild(headerRow);
+
+        // Get size values and calculate total
+        const sizeValues = [];
+        let total = 0;
+        for (let i = szSmall; i <= szBig; i++) {
+          const size = parseInt(document.getElementById("in-sz-" + i).value);
+          sizeValues.push(size);
+          total += size;
+        }
+
+        // Calculate number of rows needed
+        const rowsNeeded = Math.ceil(total / tipeitem);
+        poData.jumlahspk = parseInt(rowsNeeded);
+        //console.log(poData);
+
+        // Create data rows with maximum 50 per row
+        let rowTotals = [];
+        for (let row = 0; row < poData.jumlahspk; row++) {
+          const dataRow = document.createElement('tr');
+          const jumlahHeader = document.createElement('td');
+          jumlahHeader.textContent = poData.nomoraj +` / ${row + 1}`;
+          dataRow.appendChild(jumlahHeader);
+
+          let rowTotal = 0;
+          for (let i = 0; i < sizeValues.length; i++) {
+            let rowSize = Math.floor(sizeValues[i] / poData.jumlahspk);
+            //rowSize = Math.max(rowSize, 5); // Ensure each size has at least 5
+
+            // Adjust rowSize to maintain rowTotal <= 50
+            if (rowTotal + rowSize > tipeitem) {
+              rowSize = Math.max(0, tipeitem - rowTotal);
+            }
+
+            // Create input element for each cell
+            const sizeCell = document.createElement('td');
+            const input = document.createElement('input');
+            input.type = "number";
+            input.value = rowSize;
+            input.min = 0;
+            input.style.width = "50px";
+            input.id = `input_r_${row}_s_${i}`; // Unique ID for each input
+            input.addEventListener('change', () => {recalculateTotals(poData)}); // Add event listener
+            sizeCell.appendChild(input);
+            dataRow.appendChild(sizeCell);
+
+            sizeValues[i] -= rowSize;
+            rowTotal += rowSize;
+
+            if (rowTotal >= tipeitem) {
+              break;
+            }
+          }
+          rowTotals.push(rowTotal);
+
+          const totalCell = document.createElement('td');
+          totalCell.textContent = rowTotal;
+          dataRow.appendChild(totalCell);
+
+          tableBody.appendChild(dataRow);
+        }
+
+        // Distribute remaining sizes in the last row
+        if (poData.jumlahspk > 1) {
+          const lastRow = tableBody.rows[tableBody.rows.length - 1];
+          let lastRowTotal = 0;
+          for (let i = 0; i < sizeValues.length; i++) {
+            if (sizeValues[i] > 0) {
+              let remainingSize = sizeValues[i];
+
+              // Adjust remainingSize to maintain lastRowTotal <= 50
+              if (lastRowTotal + remainingSize > tipeitem) {
+                remainingSize = Math.max(0, tipeitem - lastRowTotal);
+              }
+
+              const sizeCell = lastRow.cells[i + 1];
+              const input = sizeCell.querySelector('input');
+              input.value = parseInt(input.value) + remainingSize;
+              lastRowTotal += remainingSize;
+              input.addEventListener('change', () => {recalculateTotals(poData)}); // Add event listener
+            }
+          }
+          rowTotals[rowTotals.length ] = lastRowTotal;
+        }
+
+        // Add "Jumlah Total" row
+        const totalRow = document.createElement('tr');
+        const jumlahTotalHeader = document.createElement('td');
+        jumlahTotalHeader.textContent = "Total";
+        totalRow.appendChild(jumlahTotalHeader);
+
+        let columnTotals = [];
+        for (let i = 0; i < sizeValues.length; i++) {
+          let columnTotal = 0;
+          for (let j = 0; j < poData.jumlahspk; j++) {
+            const input = tableBody.rows[j + 1].cells[i + 1].querySelector('input');
+            columnTotal += parseInt(input.value);
+          }
+          columnTotals.push(columnTotal);
+
+          const columnTotalCell = document.createElement('td');
+          columnTotalCell.id = 'sz-ttl-'+i;
+          columnTotalCell.textContent = columnTotal;
+          totalRow.appendChild(columnTotalCell);
+        }
+
+        const totalRowTotalCell = document.createElement('td');
+        let totalRowTotal = columnTotals.reduce((a, b) => a + b, 0); // Calculate total from column totals
+        totalRowTotalCell.textContent = totalRowTotal;
+        totalRow.appendChild(totalRowTotalCell);
+
+        tableBody.appendChild(totalRow);
+        recalculateTotals(poData);
+
+        //console.log(poData);
+
+// Recalculate totals function
+        function recalculateTotals(poData) {
+          // Update row totals
+          const tableBody = document.getElementById("tb-proses").getElementsByTagName('tbody')[0];
+          const jumlahSpk = poData.jumlahspk;
+          for (let row = 0; row < jumlahSpk; row++) {
+            let rowTotal = 0;
+            for (let i = 0; i < sizeValues.length; i++) {
+              const input = tableBody.rows[row + 1].cells[i + 1].querySelector('input');
+              rowTotal += parseInt(input.value);
+            }
+            tableBody.rows[row + 1].cells[sizeValues.length + 1].textContent = rowTotal; 
+          }
+
+          // Update column totals
+          for (let i = 0; i < sizeValues.length; i++) {
+            let columnTotal = 0;
+            for (let j = 0; j < jumlahSpk; j++) {
+              const input = tableBody.rows[j + 1].cells[i + 1].querySelector('input');
+              columnTotal += parseInt(input.value);
+            }
+            tableBody.rows[jumlahSpk + 1].cells[i + 1].textContent = columnTotal;
+          }
+
+          // Update total row total
+          let totalRowTotal = 0;
+          for (let i = 0; i < sizeValues.length; i++) {
+            totalRowTotal += parseInt(tableBody.rows[jumlahSpk + 1].cells[i + 1].textContent);
+          }
+          tableBody.rows[jumlahSpk + 1].cells[sizeValues.length + 1].textContent = totalRowTotal;
+        }
+//plus button
+        function newTbszRow(poData) {
+          console.log('button pushed');
+          const table = document.getElementById('tb-proses');
+          const lastRow = table.rows[table.rows.length - 1];
+          const szSmall = document.getElementById("szstart").value;
+          const szBig = document.getElementById("szend").value;
+          
+          // Create a new row
+          const newRow = table.insertRow(table.rows.length - 1); 
+
+          // Add cells to the new row (adjust as needed)
+          const titleCell = newRow.insertCell(0);
+          poData.jumlahspk += 1;
+          titleCell.textContent = poData.nomoraj + ' / ' + poData.jumlahspk;
+          for (let i = szSmall ; i <= szBig ; i++) {
+            const cell = newRow.insertCell(i - szSmall + 1);
+            const input = document.createElement('input'); // Create the input element
+            input.type = "number";
+            input.value = 0;
+            input.min = 0;
+            input.style.width = "50px";
+            input.id = `input_r_${poData.jumlahspk-1}_s_${i-szSmall+1}`; // Use newRow.rowIndex for unique ID
+            cell.appendChild(input); // Append the input to the cell
+            input.addEventListener('change', () => {recalculateTotals(poData)}); // Add event listener
+          }
+          // Add a cell for the row total
+          const totalCell = newRow.insertCell(szBig - szSmall + 2);
+          let rowTotal = 0; // Reset rowTotal on change
+          for (let j = szSmall; j <= szBig; j++) {
+            const cellValue = parseInt(table.rows[newRow.rowIndex].cells[j - szSmall + 1].querySelector('input').value || 0);
+            rowTotal += cellValue;
+          }
+          // Update the total cell content
+          newRow.cells[szBig - szSmall + 2].textContent = rowTotal;
+          totalCell.textContent = rowTotal; // Initially set to 0
+        };
+//minus button
+        function deleteTbszRow(poData){
+          console.log('minus pushed');
+          const table = document.getElementById('tb-proses'); // Replace 'yourTableId' with the actual ID of your table
+          if (table && table.rows.length > 2) { // Check if the table exists and has more than 2 rows
+            const rowToDeleteIndex = table.rows.length - 2; 
+            poData.jumlahspk -=1;
+            table.deleteRow(rowToDeleteIndex); 
+          }
+        }
+
+//button simpan
+        const btnsimpan = document.getElementById("btn-simpan");
+        btnsimpan.addEventListener('click', () => {simpanDataSheet(poData)});
+        btnsimpan.classList.remove("hide");
+        //--------------------------------function savedata-------------------------------------------
+        // Function to handle btn-simpan click event
+        function simpanDataSheet(poData) {
+            document.getElementById('warn-log').innerHTML='';
+            if(validateTotal(poData)){
+
+            } else {
+              document.getElementById('warn-log').innerHTML='Ukuran Total Salah';
+              return;
+            };
+
+            function validateTotal(objPoData) {
+                let validator = true;
+                const szSmall = parseInt(document.getElementById("szstart").value);
+                const szBig = parseInt(document.getElementById("szend").value);
+
+                for (let u = szSmall; u < szBig; u++) {
+                    // Use template literals correctly with backticks
+                    const inputSz = document.getElementById(`in-sz-${u}`).value;
+                    let o = u - szSmall;
+                    const tbSz = document.getElementById(`sz-ttl-${o}`).innerText;
+                    console.log(inputSz + ' / ' + tbSz); // Corrected variable name
+
+                    // Check if both elements exist before comparing
+                    if (inputSz && tbSz) {
+                        // Compare the values of the input and the total
+                        if (inputSz !== tbSz) {
+                            validator = false;
+                        }
+                    } else {
+                        // If either element is missing, set validator to false
+                        validator = false;
+                    }
+                }
+                return validator;
+            }
+
+            //console.log(poData);
+            google.script.run.poSimpan(poData);
+
+            const szSmall = parseInt(document.getElementById("szstart").value);
+            const szBig = parseInt(document.getElementById("szend").value);
+
+            const table = document.getElementById('tb-proses');
+            const tbody = table.querySelector('tbody');
+            const rows = tbody.querySelectorAll('tr');
+            const data = [];
+
+            rows.forEach((row, rowIndex) => {
+              if (rowIndex > 0 && rowIndex < rows.length - 1) { // Skip the first and last rows
+                const cells = row.querySelectorAll('td');
+                const rowData = {};
+                rowData.nomoraj = poData.nomoraj;
+                rowData.nospk = '';
+                for (let j = 21 ; j<=41;j++){
+                  rowData[`size${j}`] = ''
+                }
+
+                for (let i = 0; i <= cells.length - 1; i++) { 
+                  const noSpk = cells[i].textContent;
+                  const parts = noSpk.split("/");
+                  const rightNumber = parseInt(parts[1]); 
+                  const input = cells[i].querySelector('input'); 
+                  if (i==0){
+                    rowData.nospk = rightNumber;
+                  } else if (i==cells.length-1) {
+                    rowData.sizeTotal = noSpk;
+                  }else {
+                    if (input) {
+                      rowData[`size${i + szSmall - 1}`] = input.value; 
+                    } else {
+                      rowData[`size${i + szSmall - 1}`] = ''; 
+                    }
+                  }
+                }
+
+                data.push(rowData);
+              }
+            });
+
+            //console.log(data);
+
+            google.script.run.spkSimpan(data);
+
+            document.getElementById("pg-tersimpan").classList.toggle("hide");
+          };
+        };
+          //---------------------------------end btn save---------------------------
+      const btncari = document.getElementById("btn-cari");
+      btncari.addEventListener('click', () => {cariNoAj()})
+
+      function cariNoAj(){
+        const nomorAj = document.getElementById("se_nomoraj").value;
+        google.script.run.withSuccessHandler(cariSpkObj).searchNoAj(parseInt(nomorAj)); 
+
+        document.getElementById("tabSpk").classList.remove("hide");
+               
+      }
+
+      const cariSpkObj = function(isiTabel) {
+        const processedData = {};
+        //console.log(isiTabel);
+
+        isiTabel.forEach((row, rowIndex) => {   
+          if(rowIndex===0){
+            const poColumns = {
+              nopo:row[0],
+              jenispo:row[1],
+              noaj:row[2],
+              tanggalpo:row[3],
+              kodeitempo:row[4],
+              kisupppo:row[5],
+              merekpo:row[6],
+              warnapo:row[7],
+              totalpo:row[8],
+              tipepo:row[9],
+              null1:row[10],
+              null2:row[11],
+              null3:row[12],
+              null4:row[13],
+              null5:row[14],
+              null6:row[15],
+              null7:row[16],
+              null8:row[17],
+              null9:row[18],
+              null10:row[19],
+              null11:row[20],
+              null12:row[21],
+              null13:row[22],
+              null14:row[23]
+            };
+            processedData[`po`] = poColumns;
+          } else {      
+            const selectedColumns = {
+              noaj:row[0],
+              nospk:row[1],
+              size21:row[2],
+              size22:row[3],
+              size23:row[4],
+              size24:row[5],
+              size25:row[6], 
+              size26:row[7],
+              size27:row[8],
+              size28:row[9],
+              size29:row[10],
+              size30:row[11], 
+              size31:row[12], 
+              size32:row[13], 
+              size33:row[14],
+              size34:row[15], 
+              size35:row[16], 
+              size36:row[17], 
+              size37:row[18], 
+              size38:row[19],
+              size39:row[20],
+              size40:row[21],
+              size41:row[22],
+              sizeTotal:parseInt(row[23])
+            };
+              // Create a new property for each row using the row index as the key
+              processedData[`spk_${rowIndex }`] = selectedColumns;
+          }
+
+
+          
+        });
+
+        //console.log(processedData); // This will now contain the new object// Assuming processedData is an object with properties spk_1, spk_2, spk_3, etc.
+        const numberOfSpk = Object.keys(processedData).length-1; // Change this to the actual number of spk properties you have
+        //console.log(numberOfSpk);
+        for (let c = 1; c <= numberOfSpk; c++) { // Start from 1 if your properties start from spk_1
+            const spkValue = processedData['spk_' + c]; // Access the property dynamically
+            const poValue = processedData['po'];
+            //console.log(spkValue); // Log the value
+            tiketSpkBaru(spkValue,poValue); // Call the function with the current spk value
+            // if(c==3){
+            //   const tiketSpkPrint = document.getElementById('tiketSpk');
+            //   let divpagebreak = document.createElement('div');
+            //   divpagebreak.className = 'page-break';
+            //   tiketSpkPrint.appendChild(divpagebreak);
+            // }
+        }
+      };
+
+      // Create the table element
+      function tiketSpkBaru(spkData,poData){
+        //console.log(poData);
+        //console.log(spkData);
+        const divtable = document.createElement('div');
+        const tablebaru = document.createElement('table');
+        tablebaru.id = 'hasilSearch';
+        tablebaru.classList.add('jaraktabel');
+        tablebaru.classList.add('borderbirumuda');
+
+        // Create the tbody element
+        const tbody = document.createElement('tbody');
+
+        const poRow = document.createElement('tr');
+
+        const poCell = document.createElement('td');
+        poCell.innerText = 'No PO';
+        poCell.className = 'fontbirumuda';
+        poRow.appendChild(poCell);
+
+        const nopoCell = document.createElement('td');
+        nopoCell.colSpan = 2;
+        nopoCell.innerText = poData.nopo;
+        poRow.appendChild(nopoCell);
+
+        const jenispoCell = document.createElement('td');
+        jenispoCell.innerText = 'Jenis PO';
+        jenispoCell.className = 'fontbirumuda';
+        poRow.appendChild(jenispoCell);
+
+        const jenispoCellisi = document.createElement('td');
+        jenispoCellisi.colSpan = 2;
+        jenispoCellisi.innerText = poData.jenispo;
+        poRow.appendChild(jenispoCellisi);
+
+        tbody.appendChild(poRow);
+
+        const kodeitemRow = document.createElement('tr');
+
+        const kiCell = document.createElement('td');
+        kiCell.innerText = 'KodeItem';
+        kiCell.className = 'fontbirumuda';
+        kodeitemRow.appendChild(kiCell);
+
+        const nokiCell = document.createElement('td');
+        nokiCell.colSpan = 2;
+        nokiCell.innerText = poData.kodeitempo;
+        kodeitemRow.appendChild(nokiCell);
+
+        const kisupppoCell = document.createElement('td');
+        kisupppoCell.innerText = 'KISupp';
+        kisupppoCell.className = 'fontbirumuda';
+        kodeitemRow.appendChild(kisupppoCell);
+
+        const kisupppoCellisi = document.createElement('td');
+        kisupppoCellisi.colSpan = 2;
+        kisupppoCellisi.innerText = poData.kisupppo;
+        kodeitemRow.appendChild(kisupppoCellisi);
+
+        tbody.appendChild(kodeitemRow);
+
+        const merekRow = document.createElement('tr');
+
+        const merekCell = document.createElement('td');
+        merekCell.innerText = 'Merek';
+        merekCell.className = 'fontbirumuda';
+        merekRow.appendChild(merekCell);
+
+        const isimerekCell = document.createElement('td');
+        isimerekCell.colSpan = 2;
+        isimerekCell.innerText = poData.merekpo;
+        merekRow.appendChild(isimerekCell);
+
+        const warnaCell = document.createElement('td');
+        warnaCell.innerText = 'Warna';
+        warnaCell.className = 'fontbirumuda';
+        merekRow.appendChild(warnaCell);
+
+        const warnaCellisi = document.createElement('td');
+        warnaCellisi.colSpan = 2;
+        warnaCellisi.innerText = poData.warnapo;
+        merekRow.appendChild(warnaCellisi);
+
+        tbody.appendChild(merekRow);
+
+        const tipeRow = document.createElement('tr');
+
+        const tipeCell = document.createElement('td');
+        tipeCell.innerText = 'Tipe';
+        tipeCell.className = 'fontbirumuda';
+        tipeRow.appendChild(tipeCell);
+
+        const tipeCellisi = document.createElement('td');
+        tipeCellisi.colSpan = 2;
+        tipeCellisi.innerText = poData.tipepo;
+        tipeRow.appendChild(tipeCellisi);
+
+        const tanggalCell = document.createElement('td');
+        tanggalCell.innerText = 'Tanggal';
+        tanggalCell.className = 'fontbirumuda';
+        tipeRow.appendChild(tanggalCell);
+
+        const tanggalCellisi = document.createElement('td');
+        tanggalCellisi.colSpan = 2;
+        tanggalCellisi.innerText = poData.tanggalpo;
+        tipeRow.appendChild(tanggalCellisi);
+
+        tbody.appendChild(tipeRow);
+
+        // Create the first row with colspan for AJ and SPK
+        const ajRow = document.createElement('tr');
+
+        // Create the cell for AJ 
+        const ajCell = document.createElement('td');
+        ajCell.innerText = 'No AJ';
+        ajCell.className = 'fontbirumuda';
+        ajRow.appendChild(ajCell);
+
+        // Create the empty cell for the second column
+        const noajCell = document.createElement('td');
+        noajCell.colSpan = 2;
+        noajCell.innerText = 'L'+spkData.noaj;
+        ajRow.appendChild(noajCell);
+
+        // Create the cell for SPK with colspan of 2
+        const spkCell = document.createElement('td');
+        spkCell.innerText = 'SPK';
+        spkCell.className = 'fontbirumuda';
+        ajRow.appendChild(spkCell);
+
+        // Create the empty cell for the last column
+        const nospkCell = document.createElement('td');
+        nospkCell.colSpan = 2; // Set colspan for SPK cell
+        nospkCell.innerText = spkData.nospk;
+        ajRow.appendChild(nospkCell);
+
+        // Append the first row to the tbody
+        tbody.appendChild(ajRow);
+
+        // Define the data for the remaining rows
+        const rowsData = [
+            ['size','21', '22', '23', '24', '25'],
+            ['26', '27', '28', '29', '30'],
+            ['total', '31', '32', '33', '34', '35'],
+            ['isitotal', '36', '37', '38', '39', '40'],
+            [ '41', 'ket']
+        ];
+
+        // Create the remaining rows and cells
+        rowsData.forEach((rowData) => {
+            const row = document.createElement('tr');
+
+            rowData.forEach((cellData, cellIndex) => {
+                const cell = document.createElement('td');
+
+                if (cellData === '') {
+                    // If the cell data is empty, we can skip adding any text
+                    cell.innerHTML = '';
+                } else if(cellData === 'size') {
+                    cell.innerHTML = cellData;
+                    cell.rowSpan = 2;
+                    cell.className = 'fontbirumuda';
+                } else if(cellData === 'total') {
+                    cell.innerHTML = cellData;
+                    cell.className = 'fontbirumuda';
+                } else if(cellData === 'isitotal') {
+                    cell.innerText = spkData.sizeTotal;
+                    cell.rowSpan = 2;
+                    cell.style.textAlign = 'center';
+                } else if(cellData === 'ket') {
+                    cell.innerText = '';
+                    cell.colSpan = 4;
+                    const labelKet = document.createElement('label');
+                    labelKet.className = 'superscript';
+                    labelKet.innerText = 'Ket';
+                    cell.appendChild(labelKet);
+                } else {
+                    // For the last rows, just create a flex div
+                    const div = document.createElement('div');
+                    div.className = 'flex';
+                    const labelSup = document.createElement('label');
+                    labelSup.className = 'superscript';
+                    labelSup.innerText = cellData + ' ';
+                    const labelFlex = document.createElement('div');
+                    labelFlex.className = 'flex-grow';
+                    labelFlex.id = 'hs' + cellData; // Set the id for the flex-grow label
+                    if(spkData['size'+cellData]==0){
+                      labelFlex.innerText = ''; // Default value
+                    } else {
+                      labelFlex.innerText = spkData['size'+cellData]; // Default value
+                    }
+
+                    div.appendChild(labelSup);
+                    div.appendChild(labelFlex);
+                    cell.appendChild(div);
+                }
+
+                row.appendChild(cell);
+            });
+
+            tbody.appendChild(row);
+        });
+
+        // Append tbody to the table
+        tablebaru.appendChild(tbody);
+        const tdElements = tablebaru.querySelectorAll('td');
+        tdElements.forEach(td => {
+            td.classList.add('borderbirumuda');
+        });
+
+        // Append the table to the body of the document
+        divtable.appendChild(tablebaru);
+        divtable.className = 'kartuspk';
+        document.getElementById("tiketSpk").appendChild(divtable);
+      };
+
+      function tutupTiketSpk() {
+        const tiketspk = document.getElementById("tiketSpk");
+        const tables = tiketspk.getElementsByTagName('table');
+        Array.from(tables).forEach(table => {
+            table.remove(); // Remove each table
+        });
+        document.getElementById("tabSpk").classList.add("hide");
+      };
+
+      function printTiketSpk() {
+        // Hide the main body content
+        let mainbody = document.querySelector('body');
+        mainbody.style.visibility = 'hidden'; // Hide the body
+
+        // Show the print area
+        let printtiketarea = document.getElementById('tiketSpk');
+        printtiketarea.style.visibility = 'visible'; // Show the print area
+        printtiketarea.style.overflow = 'visible';
+
+        // Trigger the print dialog
+        window.print();
+
+        // Reset visibility after printing
+        mainbody.style.visibility = 'visible'; // Show the body again
+    };
+      //---------------------------------end of script---------------------------------------------------------------------
+    </script>
+  </body>
 </html>
